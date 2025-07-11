@@ -21,9 +21,10 @@ def star_email(uid: str, client: EmailClient = Depends(get_client)):
     return client.star(uid)
 
 @app.post("/emails/{uid}/reply", response_model=dict)
-def reply_email(uid: str, body: ReplyIn, client: EmailClient = Depends(get_client)):
+def reply_email(uid: str, reply: ReplyIn, client: EmailClient = Depends(get_client)):
     mails = client.fetch(days=30)
     msg = next((m for m in mails if m.get('uid') == uid), None)
     if not msg:
         raise HTTPException(404, "Email not found")
     return client.reply(msg.get('from_address'), msg.get('subject'), body.reply_text)
+
