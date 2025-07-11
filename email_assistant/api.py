@@ -26,5 +26,5 @@ def reply_email(uid: str, reply: ReplyIn, client: EmailClient = Depends(get_clie
     msg = next((m for m in mails if m.get('uid') == uid), None)
     if not msg:
         raise HTTPException(404, "Email not found")
-    return client.reply(msg.get('from_address'), msg.get('subject'), body.reply_text)
+    return client.reply(msg.get('from_address'), msg.get('subject'), reply.reply_text)
 
